@@ -254,7 +254,7 @@
                 </tr>
             </thead>
             <tbody id="quoteBody">
-                <!-- Les lignes seront générées dynamiquement -->
+                <!-- Contenu généré dynamiquement -->
             </tbody>
         </table>
 
@@ -356,7 +356,7 @@
             {
                 category: "Arrêt d'urgence / affichage de sécurité",
                 items: [
-                    { desc: "Fourniture et pose AU", price: 350, unit: "€/U", qty: 1, material: 350, pose: 0 },
+                    { desc: "Fourniture et pose AU", price: 350, unit: "€/U", qty: 1, material: 350, pose: 20 },
                     { desc: "Distance liaison AU", price: 3, unit: "€/ml", qty: 90, material: 270, pose: 0 },
                     { desc: "Affichage règlementaire", price: 100, unit: "€/100kWc", qty: 1, material: 107.2, pose: 0 }
                 ]
@@ -401,7 +401,7 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="subcategory">${item.desc}</td>
-                        <td class="price-column">${item.price}</td>
+                        <td class="input-cell"><input type="number" value="${item.price}" step="0.01" onchange="updateCalculations()"></td>
                         <td>${item.unit}</td>
                         <td class="input-cell"><input type="number" value="${item.qty}" onchange="updateCalculations()" step="0.01"></td>
                         <td class="price-column calculated-field">${item.material.toFixed(2)}</td>
@@ -429,7 +429,7 @@
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 if (cells.length === 6 && !cells[0].classList.contains('category-header')) {
-                    const price = parseFloat(cells[1].textContent) || 0;
+                    const price = parseFloat(cells[1].querySelector('input')?.value) || 0;
                     const qty = parseFloat(cells[3].querySelector('input')?.value) || 0;
                     
                     // Calculer les totaux (simplifié pour l'exemple)
@@ -521,12 +521,12 @@
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(8);
             
-            doc.text('Description', 18, yPosition + 5);
-            doc.text('Quantité', 90, yPosition + 5);
-            doc.text('Unité', 110, yPosition + 5);
-            doc.text('Matériel', 130, yPosition + 5);
-            doc.text('Pose', 155, yPosition + 5);
-            doc.text('Prix de vente', 170, yPosition + 5);
+            doc.text('Description', 18, yPosition + 5);  
+            doc.text('Prix de vente', 80, yPosition + 5);
+            doc.text('Quantité', 110, yPosition + 5);
+            doc.text('Unité', 130, yPosition + 5);
+            doc.text('Matériel', 155, yPosition + 5);
+            doc.text('Pose', 180, yPosition + 5);
             
             yPosition += 10;
             doc.setTextColor(0, 0, 0);
@@ -555,22 +555,22 @@
                     } else {
                         // Ligne d'item
                         const desc = cells[0].textContent.trim();
+                        const price = cells[1].querySelector('input')?.value || '0';
                         const qty = cells[3].querySelector('input')?.value || '0';
                         const unit = cells[2].textContent;
                         const material = parseFloat(cells[4].textContent) || 0;
                         const labor = parseFloat(cells[5].textContent) || 0;
-                        const total = material + labor;
+                        
                         
                         if (desc && (material > 0 || labor > 0 || qty > 0)) {
                             doc.text(desc.substring(0, 35), 18, yPosition + 2);
-                            doc.text(qty, 92, yPosition + 2);
-                            doc.text(unit, 112, yPosition + 2);
-                            doc.text(material.toFixed(2), 132, yPosition + 2);
-                            doc.text(labor.toFixed(2), 157, yPosition + 2);
-                            doc.text(total.toFixed(2), 172, yPosition + 2);
+                            doc.text(price, 80, yPosition + 2);
+                            doc.text(qty, 112, yPosition + 2);
+                            doc.text(unit, 132, yPosition + 2);
+                            doc.text(material.toFixed(2), 157, yPosition + 2);
+                            doc.text(labor.toFixed(2), 182, yPosition + 2);
                             
                             totalMaterial += material;
-                            totalLabor += labor;
                         }
                     }
                     yPosition += 6;
