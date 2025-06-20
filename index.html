@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Devis Solaire</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .project-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(30, 60, 114, 0.1);
+            border-radius: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .quote-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote-table th {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .quote-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 11px;
+        }
+
+        .quote-table tr:nth-child(even) {
+            background-color: rgba(30, 60, 114, 0.05);
+        }
+
+        .quote-table tr:hover {
+            background-color: rgba(30, 60, 114, 0.1);
+        }
+
+        .category-header {
+            background: rgba(30, 60, 114, 0.2) !important;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .subcategory {
+            padding-left: 20px;
+            font-style: italic;
+        }
+
+        .input-cell input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .total-section {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .total-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .total-item h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .total-item .amount {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .btn-generate {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .calculated-field {
+            background-color: rgba(30, 60, 114, 0.1);
+            font-weight: bold;
+        }
+
+        .price-column {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .project-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .quote-table {
+                font-size: 10px;
+            }
+            
+            .total-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌞 DEVIS INSTALLATION SOLAIRE</h1>
+            <p>Générateur de devis professionnel</p>
+        </div>
+
+        <div class="project-info">
+            <div class="form-group">
+                <label for="projectName">Nom du projet :</label>
+                <input type="text" id="projectName" placeholder="Entrer le nom du projet">
+            </div>
+            <div class="form-group">
+                <label for="projectAddress">Adresse :</label>
+                <input type="text" id="projectAddress" placeholder="Adresse complète">
+            </div>
+            <div class="form-group">
+                <label for="moduleCount">Nombre de modules :</label>
+                <input type="number" id="moduleCount" value="320" onchange="calculateProject()">
+            </div>
+            <div class="form-group">
+                <label for="modulePower">Puissance du module (W) :</label>
+                <input type="number" id="modulePower" value="335" onchange="calculateProject()">
+            </div>
+            <div class="form-group">
+                <label for="projectPower">Puissance du projet (kWc) :</label>
+                <input type="number" id="projectPower" readonly class="calculated-field">
+            </div>
+            <div class="form-group">
+                <label for="roofSurface">Surface de la toiture (m²) :</label>
+                <input type="number" id="roofSurface" value="544">
+            </div>
+        </div>
+
+        <table class="quote-table" id="quoteTable">
+            <thead>
+                <tr>
+                    <th style="width: 40%">Description</th>
+                    <th style="width: 10%">Prix HT</th>
+                    <th style="width: 10%">Unité</th>
+                    <th style="width: 10%">Quantité</th>
+                    <th style="width: 15%">Matériel (€)</th>
+                    <th style="width: 15%">Pose (€)</th>
+                </tr>
+            </thead>
+            <tbody id="quoteBody">
+                <!-- Les lignes seront générées dynamiquement -->
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div class="total-grid">
+                <div class="total-item">
+                    <h3>Total Matériel</h3>
+                    <div class="amount" id="totalMaterial">0.00 €</div>
+                </div>
+                <div class="total-item">
+                    <h3>Total Pose</h3>
+                    <div class="amount" id="totalLabor">0.00 €</div>
+                </div>
+                <div class="total-item">
+                    <h3>TOTAL HT</h3>
+                    <div class="amount" id="totalHT">0.00 €</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-generate" onclick="generatePDF()">
+            📄 GÉNÉRER LE PDF
+        </button>
+    </div>
+
+    <script>
+        const quoteData = [
+            {
+                category: "Ingénierie",
+                items: [
+                    { desc: "Ingénierie + DOE <100kWc", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
+                    { desc: "<250kWc", price: 2000, unit: "", qty: 1, material: 2000, pose: 0 },
+                    { desc: "<500kWc", price: 3500, unit: "", qty: 0, material: 0, pose: 0 },
+                    { desc: "<1000kWc", price: 5000, unit: "", qty: 0, material: 0, pose: 0 }
+                ]
+            },
+            {
+                category: "Mise en sécurité",
+                items: [
+                    { desc: "Mise en sécu standard", price: 500, unit: "€/100kWc", qty: 5.36, material: 536, pose: 0 }
+                ]
+            },
+            {
+                category: "Raccordement des modules",
+                items: [
+                    { desc: "Raccordement de 1 panneau", price: 2, unit: "€/U", qty: 320, material: 640, pose: 0 }
+                ]
+            },
+            {
+                category: "Câble solaire",
+                items: [
+                    { desc: "4 mm²", price: 0.55, unit: "€/ml", qty: 0, material: 0, pose: 0 },
+                    { desc: "6 mm²", price: 0.8, unit: "€/ml", qty: 1000, material: 800, pose: 1000 }
+                ]
+            },
+            {
+                category: "Connecteurs",
+                items: [
+                    { desc: "Paire connecteurs", price: 4, unit: "€/U", qty: 16, material: 64, pose: 0 },
+                    { desc: "Paire Y", price: 12, unit: "€/U", qty: 0, material: 0, pose: 0 }
+                ]
+            },
+            {
+                category: "Câble AC",
+                items: [
+                    { desc: "120 mm²", price: 2.88, unit: "€/ml", qty: 360, material: 1036.8, pose: 360 }
+                ]
+            },
+            {
+                category: "Cheminement des câbles",
+                items: [
+                    { desc: "50*100 sur chaque rampant onduleur", price: 36, unit: "€/ond", qty: 1, material: 36, pose: 72 },
+                    { desc: "50*300 sur chaque rampant onduleur", price: 10, unit: "€/ond", qty: 1, material: 10, pose: 20 }
+                ]
+            },
+            {
+                category: "Coffret DC",
+                items: [
+                    { desc: "<100kWc", price: 1100, unit: "€/U", qty: 1, material: 1100, pose: 0 },
+                    { desc: "Chassis / enclos", price: 150, unit: "€/U", qty: 1, material: 150, pose: 0 }
+                ]
+            },
+            {
+                category: "Armoire AC + AGCP",
+                items: [
+                    { desc: "Régime TT", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
+                    { desc: "+ 750 €/ond<100kWc", price: 750, unit: "", qty: 1, material: 750, pose: 0 },
+                    { desc: "Pose", price: 1000, unit: "€/100kWc", qty: 1, material: 0, pose: 1072 },
+                    { desc: "Pose", price: 200, unit: "€/100kWc", qty: 1, material: 0, pose: 214.4 }
+                ]
+            },
+            {
+                category: "Liaison equipotentielle",
+                items: [
+                    { desc: "Fourniture", price: 500, unit: "€/100kWc", qty: 1, material: 536, pose: 0 },
+                    { desc: "Pose", price: 1000, unit: "€/100kWc", qty: 1, material: 0, pose: 1072 }
+                ]
+            },
+            {
+                category: "Arrêt d'urgence / affichage de sécurité",
+                items: [
+                    { desc: "Fourniture et pose AU", price: 350, unit: "€/U", qty: 1, material: 350, pose: 0 },
+                    { desc: "Distance liaison AU", price: 3, unit: "€/ml", qty: 90, material: 270, pose: 0 },
+                    { desc: "Affichage règlementaire", price: 100, unit: "€/100kWc", qty: 1, material: 107.2, pose: 0 }
+                ]
+            },
+            {
+                category: "Monitoring Weblog",
+                items: [
+                    { desc: "Datalogger + sonde (pose seule)", price: 1250, unit: "€", qty: 1, material: 1250, pose: 0 },
+                    { desc: "Système 0% injection BT (pose seule)", price: 400, unit: "€", qty: 1, material: 400, pose: 0 },
+                    { desc: "Tors <1500A (x2 si boucle Togowski)", price: 250, unit: "€/U", qty: 6, material: 1500, pose: 0 },
+                    { desc: "Distance liaison bus onduleur", price: 3, unit: "€/ml", qty: 90, material: 270, pose: 0 }
+                ]
+            },
+            {
+                category: "Éclairage",
+                items: [
+                    { desc: "Néon LED 36W", price: 155, unit: "€/U", qty: 4, material: 620, pose: 0 }
+                ]
+            },
+            {
+                category: "Contrôle de l'installation",
+                items: [
+                    { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "€/U", qty: 1, material: 1000, pose: 0 }
+                ]
+            }
+        ];
+
+        function initializeTable() {
+            const tbody = document.getElementById('quoteBody');
+            tbody.innerHTML = '';
+
+            quoteData.forEach(category => {
+                // Ligne de catégorie
+                const categoryRow = document.createElement('tr');
+                categoryRow.innerHTML = `
+                    <td class="category-header" colspan="6">${category.category}</td>
+                `;
+                tbody.appendChild(categoryRow);
+
+                // Lignes d'items
+                category.items.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="subcategory">${item.desc}</td>
+                        <td class="price-column">${item.price}</td>
+                        <td>${item.unit}</td>
+                        <td class="input-cell"><input type="number" value="${item.qty}" onchange="updateCalculations()" step="0.01"></td>
+                        <td class="price-column calculated-field">${item.material.toFixed(2)}</td>
+                        <td class="price-column calculated-field">${item.pose.toFixed(2)}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+
+            updateCalculations();
+        }
+
+        function calculateProject() {
+            const moduleCount = parseFloat(document.getElementById('moduleCount').value) || 0;
+            const modulePower = parseFloat(document.getElementById('modulePower').value) || 0;
+            const projectPower = (moduleCount * modulePower) / 1000;
+            document.getElementById('projectPower').value = projectPower.toFixed(1);
+        }
+
+        function updateCalculations() {
+            let totalMaterial = 0;
+            let totalLabor = 0;
+
+            const rows = document.querySelectorAll('#quoteBody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length === 6 && !cells[0].classList.contains('category-header')) {
+                    const price = parseFloat(cells[1].textContent) || 0;
+                    const qty = parseFloat(cells[3].querySelector('input')?.value) || 0;
+                    
+                    // Calculer les totaux (simplifié pour l'exemple)
+                    const materialCost = price * qty;
+                    const laborCost = 0; // Logique de calcul de pose à adapter
+                    
+                    cells[4].textContent = materialCost.toFixed(2);
+                    cells[5].textContent = laborCost.toFixed(2);
+                    
+                    totalMaterial += materialCost;
+                    totalLabor += laborCost;
+                }
+            });
+
+            document.getElementById('totalMaterial').textContent = totalMaterial.toFixed(2) + ' €';
+            document.getElementById('totalLabor').textContent = totalLabor.toFixed(2) + ' €';
+            document.getElementById('totalHT').textContent = (totalMaterial + totalLabor).toFixed(2) + ' €';
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            let yPosition = 20;
+            
+            // En-tête avec style
+            doc.setFillColor(30, 60, 114);
+            doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text('DEVIS INSTALLATION SOLAIRE', 105, 25, { align: 'center' });
+            
+            yPosition = 50;
+            
+            // Informations du projet dans un tableau
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            
+            const projectName = document.getElementById('projectName').value || '';
+            const projectAddress = document.getElementById('projectAddress').value || '';
+            const moduleCount = document.getElementById('moduleCount').value || '320';
+            const modulePower = document.getElementById('modulePower').value || '335';
+            const projectPower = document.getElementById('projectPower').value || '107.2';
+            const roofSurface = document.getElementById('roofSurface').value || '544';
+            
+            // Tableau des informations projet
+            doc.setFillColor(240, 240, 240);
+            doc.rect(15, yPosition, 180, 8, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.text('INFORMATIONS DU PROJET', 20, yPosition + 5);
+            yPosition += 15;
+            
+            // Ligne 1
+            doc.setFont('helvetica', 'normal');
+            doc.text('Nom du projet :', 20, yPosition);
+            doc.text(projectName, 70, yPosition);
+            doc.text('Adresse :', 110, yPosition);
+            doc.text(projectAddress, 140, yPosition);
+            yPosition += 8;
+            
+            // Ligne 2
+            doc.text('Nombre de modules :', 20, yPosition);
+            doc.text(moduleCount, 70, yPosition);
+            doc.text('Puissance du module :', 110, yPosition);
+            doc.text(modulePower + ' W', 155, yPosition);
+            yPosition += 8;
+            
+            // Ligne 3
+            doc.text('Puissance du projet (kWc) :', 20, yPosition);
+            doc.text(projectPower, 70, yPosition);
+            doc.text('Surface de la toiture (m²) :', 110, yPosition);
+            doc.text(roofSurface, 155, yPosition);
+            yPosition += 15;
+            
+            // Légende
+            doc.setFillColor(220, 220, 220);
+            doc.rect(15, yPosition, 25, 6, 'F');
+            doc.text('Légende', 20, yPosition + 4);
+            doc.text(roofSurface, 45, yPosition + 4);
+            doc.text(projectPower, 70, yPosition + 4);
+            yPosition += 15;
+            
+            // En-tête du tableau principal
+            doc.setFillColor(30, 60, 114);
+            doc.rect(15, yPosition, 180, 8, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            
+            doc.text('Description', 18, yPosition + 5);
+            doc.text('Quantité', 90, yPosition + 5);
+            doc.text('Unité', 110, yPosition + 5);
+            doc.text('Matériel', 130, yPosition + 5);
+            doc.text('Pose', 155, yPosition + 5);
+            doc.text('Prix de vente', 170, yPosition + 5);
+            
+            yPosition += 10;
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'normal');
+            
+            // Données du tableau
+            let totalMaterial = 0;
+            let totalLabor = 0;
+            
+            const rows = document.querySelectorAll('#quoteBody tr');
+            rows.forEach(row => {
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                const cells = row.querySelectorAll('td');
+                if (cells.length === 6) {
+                    if (cells[0].classList.contains('category-header')) {
+                        // Ligne de catégorie
+                        doc.setFillColor(200, 200, 200);
+                        doc.rect(15, yPosition - 2, 180, 6, 'F');
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(cells[0].textContent, 18, yPosition + 2);
+                        doc.setFont('helvetica', 'normal');
+                    } else {
+                        // Ligne d'item
+                        const desc = cells[0].textContent.trim();
+                        const qty = cells[3].querySelector('input')?.value || '0';
+                        const unit = cells[2].textContent;
+                        const material = parseFloat(cells[4].textContent) || 0;
+                        const labor = parseFloat(cells[5].textContent) || 0;
+                        const total = material + labor;
+                        
+                        if (desc && (material > 0 || labor > 0 || qty > 0)) {
+                            doc.text(desc.substring(0, 35), 18, yPosition + 2);
+                            doc.text(qty, 92, yPosition + 2);
+                            doc.text(unit, 112, yPosition + 2);
+                            doc.text(material.toFixed(2), 132, yPosition + 2);
+                            doc.text(labor.toFixed(2), 157, yPosition + 2);
+                            doc.text(total.toFixed(2), 172, yPosition + 2);
+                            
+                            totalMaterial += material;
+                            totalLabor += labor;
+                        }
+                    }
+                    yPosition += 6;
+                }
+            });
+            
+            // Ligne de séparation
+            yPosition += 5;
+            doc.setLineWidth(0.5);
+            doc.line(15, yPosition, 195, yPosition);
+            yPosition += 10;
+            
+            // Totaux
+            doc.setFillColor(30, 60, 114);
+            doc.rect(15, yPosition, 180, 25, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            
+            const totalHT = totalMaterial + totalLabor;
+            
+            doc.text('TOTAUX', 105, yPosition + 8, { align: 'center' });
+            
+            doc.setFontSize(10);
+            doc.text(`Matériel: ${totalMaterial.toFixed(2)} €`, 25, yPosition + 15);
+            doc.text(`Pose: ${totalLabor.toFixed(2)} €`, 85, yPosition + 15);
+            doc.text(`TOTAL HT: ${totalHT.toFixed(2)} €`, 145, yPosition + 15);
+            
+            yPosition += 30;
+            
+            // Prestations incluses
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.text('Prestations complémentaires incluses :', 20, yPosition);
+            yPosition += 5;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.text('• Mise en service', 20, yPosition);
+            yPosition += 4;
+            doc.text('• Configuration du monitoring', 20, yPosition);
+            yPosition += 4;
+            doc.text('• 1 visite de contrôle et prise de mesure', 20, yPosition);
+            yPosition += 4;
+            doc.text('• Nettoyage du chantier et évacuation des déchets', 20, yPosition);
+            yPosition += 10;
+            
+            // Pied de page
+            doc.setFontSize(8);
+            doc.setTextColor(100, 100, 100);
+            const today = new Date().toLocaleDateString('fr-FR');
+            doc.text(`Devis généré le ${today}`, 20, 285);
+            doc.text('Page 1', 180, 285);
+            
+            doc.save(`devis-solaire-${projectName.replace(/\s+/g, '-') || 'projet'}.pdf`);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateProject();
+            initializeTable();
+        });
+    </script>
+</body>
+</html>
