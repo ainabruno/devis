@@ -27,6 +27,86 @@
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
+        .header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+    text-align: left;
+    gap: 25px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
+}
+
+.company-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.header-text {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.header-text h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #333;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-text p {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 8px;
+}
+
+
+ <!--        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .company-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
 
         .header {
             text-align: center;
@@ -41,7 +121,8 @@
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: bold;
-        }
+        } 
+  -->
 
         .project-info {
             display: grid;
@@ -211,9 +292,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌞 DEVIS INSTALLATION SOLAIRE</h1>
-            <p>Générateur de devis professionnel</p>
-        </div>
+    <div class="company-logo">
+        <img id="logoImage" src="images1.png" alt="Logo Énergie Solaire" onerror="this.style.display='none';">
+    </div>
+    <div class="header-text">
+        <h1>DEVIS INSTALLATION SOLAIRE</h1>
+        <p>Générateur de devis professionnel</p>
+    </div>
+</div>
+
+
 
         <div class="project-info">
             <div class="form-group">
@@ -246,7 +334,7 @@
             <thead>
                 <tr>
                     <th style="width: 40%">Description</th>
-                    <th style="width: 10%">Prix HT</th>
+                    <th style="width: 10%">Prix Unitaire</th>
                     <th style="width: 10%">Unité</th>
                     <th style="width: 10%">Quantité</th>
                     <th style="width: 15%">Matériel (€)</th>
@@ -261,18 +349,17 @@
         <div class="total-section">
             <div class="total-grid">
                 <div class="total-item">
-                    <h3>Total Matériel</h3>
-                    <div class="amount" id="totalMaterial">0.00 €</div>
-                </div>
-                <div class="total-item">
-                    <h3>Total Pose</h3>
-                    <div class="amount" id="totalLabor">0.00 €</div>
-                </div>
-                <div class="total-item">
-                    <h3>TOTAL HT</h3>
+                    <h3>Total HT</h3>
                     <div class="amount" id="totalHT">0.00 €</div>
                 </div>
-            </div>
+                <div class="total-item">
+                    <h3>TVA 20%</h3>
+                    <div class="amount" id="tva">0.00 €</div>
+                </div>
+                <div class="total-item">
+                    <h3>TOTAL TTC</h3>
+                    <div class="amount" id="totalTTC">0.00 €</div>
+                </div>
         </div>
 
         <button class="btn-generate" onclick="generatePDF()">
@@ -285,56 +372,56 @@
             {
                 category: "Ingénierie",
                 items: [
-                    { desc: "Ingénierie + DOE <100kWc", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
-                    { desc: "<250kWc", price: 2000, unit: "", qty: 1, material: 2000, pose: 0 },
-                    { desc: "<500kWc", price: 3500, unit: "", qty: 0, material: 0, pose: 0 },
-                    { desc: "<1000kWc", price: 5000, unit: "", qty: 0, material: 0, pose: 0 }
+                    { desc: "Ingénierie + DOE <100kWc", price: 1000, unit: "kWc", qty: 1, material: 1000, pose: 0 },
+                    { desc: "<250kWc", price: 2000, unit: "kWc", qty: 1, material: 2000, pose: 0 },
+                    { desc: "<500kWc", price: 3500, unit: "kWc", qty: 0, material: 0, pose: 0 },
+                    { desc: "<1000kWc", price: 5000, unit: "kWc", qty: 0, material: 0, pose: 0 }
                 ]
             },
             {
                 category: "Mise en sécurité",
                 items: [
-                    { desc: "Mise en sécu standard", price: 500, unit: "€/100kWc", qty: 5.36, material: 536, pose: 0 }
+                    { desc: "Mise en sécu standard", price: 500, unit: "kWc", qty: 5.36, material: 536, pose: 0 }
                 ]
             },
             {
                 category: "Raccordement des modules",
                 items: [
-                    { desc: "Raccordement de 1 panneau", price: 2, unit: "€/U", qty: 320, material: 640, pose: 0 }
+                    { desc: "Raccordement de 1 panneau", price: 2, unit: "U", qty: 320, material: 640, pose: 0 }
                 ]
             },
             {
                 category: "Câble solaire",
                 items: [
-                    { desc: "4 mm²", price: 0.55, unit: "€/ml", qty: 0, material: 0, pose: 0 },
-                    { desc: "6 mm²", price: 0.8, unit: "€/ml", qty: 1000, material: 800, pose: 1000 }
+                    { desc: "4 mm²", price: 0.55, unit: "ml", qty: 0, material: 0, pose: 0 },
+                    { desc: "6 mm²", price: 0.8, unit: "ml", qty: 1000, material: 800, pose: 1000 }
                 ]
             },
             {
                 category: "Connecteurs",
                 items: [
-                    { desc: "Paire connecteurs", price: 4, unit: "€/U", qty: 16, material: 64, pose: 0 },
-                    { desc: "Paire Y", price: 12, unit: "€/U", qty: 0, material: 0, pose: 0 }
+                    { desc: "Paire connecteurs", price: 4, unit: "U", qty: 16, material: 64, pose: 0 },
+                    { desc: "Paire Y", price: 12, unit: "U", qty: 0, material: 0, pose: 0 }
                 ]
             },
             {
                 category: "Câble AC",
                 items: [
-                    { desc: "120 mm²", price: 2.88, unit: "€/ml", qty: 360, material: 1036.8, pose: 360 }
+                    { desc: "120 mm²", price: 2.88, unit: "ml", qty: 360, material: 1036.8, pose: 360 }
                 ]
             },
             {
                 category: "Cheminement des câbles",
                 items: [
-                    { desc: "50*100 sur chaque rampant onduleur", price: 36, unit: "€/ond", qty: 1, material: 36, pose: 72 },
-                    { desc: "50*300 sur chaque rampant onduleur", price: 10, unit: "€/ond", qty: 1, material: 10, pose: 20 }
+                    { desc: "50*100 sur chaque rampant onduleur", price: 36, unit: "ond", qty: 1, material: 36, pose: 72 },
+                    { desc: "50*300 sur chaque rampant onduleur", price: 10, unit: "ond", qty: 1, material: 10, pose: 20 }
                 ]
             },
             {
                 category: "Coffret DC",
                 items: [
-                    { desc: "<100kWc", price: 1100, unit: "€/U", qty: 1, material: 1100, pose: 0 },
-                    { desc: "Chassis / enclos", price: 150, unit: "€/U", qty: 1, material: 150, pose: 0 }
+                    { desc: "<100kWc", price: 1100, unit: "U", qty: 1, material: 1100, pose: 0 },
+                    { desc: "Chassis / enclos", price: 150, unit: "U", qty: 1, material: 150, pose: 0 }
                 ]
             },
             {
@@ -342,44 +429,44 @@
                 items: [
                     { desc: "Régime TT", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
                     { desc: "+ 750 €/ond<100kWc", price: 750, unit: "", qty: 1, material: 750, pose: 0 },
-                    { desc: "Pose", price: 1000, unit: "€/100kWc", qty: 1, material: 0, pose: 1072 },
-                    { desc: "Pose", price: 200, unit: "€/100kWc", qty: 1, material: 0, pose: 214.4 }
+                    { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 },
+                    { desc: "Pose", price: 200, unit: "kWc", qty: 1, material: 0, pose: 214.4 }
                 ]
             },
             {
                 category: "Liaison equipotentielle",
                 items: [
-                    { desc: "Fourniture", price: 500, unit: "€/100kWc", qty: 1, material: 536, pose: 0 },
-                    { desc: "Pose", price: 1000, unit: "€/100kWc", qty: 1, material: 0, pose: 1072 }
+                    { desc: "Fourniture", price: 500, unit: "kWc", qty: 1, material: 536, pose: 0 },
+                    { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 }
                 ]
             },
             {
                 category: "Arrêt d'urgence / affichage de sécurité",
                 items: [
-                    { desc: "Fourniture et pose AU", price: 350, unit: "€/U", qty: 1, material: 350, pose: 20 },
-                    { desc: "Distance liaison AU", price: 3, unit: "€/ml", qty: 90, material: 270, pose: 0 },
-                    { desc: "Affichage règlementaire", price: 100, unit: "€/100kWc", qty: 1, material: 107.2, pose: 0 }
+                    { desc: "Fourniture et pose AU", price: 350, unit: "U", qty: 1, material: 350, pose: 20 },
+                    { desc: "Distance liaison AU", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 },
+                    { desc: "Affichage règlementaire", price: 100, unit: "kWc", qty: 1, material: 107.2, pose: 0 }
                 ]
             },
             {
                 category: "Monitoring Weblog",
                 items: [
-                    { desc: "Datalogger + sonde (pose seule)", price: 1250, unit: "€", qty: 1, material: 1250, pose: 0 },
-                    { desc: "Système 0% injection BT (pose seule)", price: 400, unit: "€", qty: 1, material: 400, pose: 0 },
-                    { desc: "Tors <1500A (x2 si boucle Togowski)", price: 250, unit: "€/U", qty: 6, material: 1500, pose: 0 },
-                    { desc: "Distance liaison bus onduleur", price: 3, unit: "€/ml", qty: 90, material: 270, pose: 0 }
+                    { desc: "Datalogger + sonde (pose seule)", price: 1250, unit: "", qty: 1, material: 1250, pose: 0 },
+                    { desc: "Système 0% injection BT (pose seule)", price: 400, unit: "", qty: 1, material: 400, pose: 0 },
+                    { desc: "Tors <1500A (x2 si boucle Togowski)", price: 250, unit: "U", qty: 6, material: 1500, pose: 0 },
+                    { desc: "Distance liaison bus onduleur", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 }
                 ]
             },
             {
                 category: "Éclairage",
                 items: [
-                    { desc: "Néon LED 36W", price: 155, unit: "€/U", qty: 4, material: 620, pose: 0 }
+                    { desc: "Néon LED 36W", price: 155, unit: "U", qty: 4, material: 620, pose: 0 }
                 ]
             },
             {
                 category: "Contrôle de l'installation",
                 items: [
-                    { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "€/U", qty: 1, material: 1000, pose: 0 }
+                    { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "U", qty: 1, material: 1000, pose: 0 }
                 ]
             }
         ];
@@ -443,27 +530,55 @@
                     totalLabor += laborCost;
                 }
             });
-
-            document.getElementById('totalMaterial').textContent = totalMaterial.toFixed(2) + ' €';
-            document.getElementById('totalLabor').textContent = totalLabor.toFixed(2) + ' €';
             document.getElementById('totalHT').textContent = (totalMaterial + totalLabor).toFixed(2) + ' €';
-        }
 
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
+document.getElementById('tva').textContent = ((totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
+
+document.getElementById('totalTTC').textContent = ((totalMaterial + totalLabor) +((totalMaterial + totalLabor)*0.2)).toFixed(2) + ' €';
             
-            let yPosition = 20;
+        }
+        
+        async function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const logoImg = document.getElementById('logoImage');
+    
+    if (!logoImg.complete) {
+        await new Promise(resolve => {
+            logoImg.onload = resolve;
+            logoImg.onerror = resolve;
+        });
+    }
+
+    // Création d’un canvas pour convertir l’image
+    const canvas = document.createElement('canvas');
+    canvas.width = logoImg.naturalWidth;
+    canvas.height = logoImg.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(logoImg, 0, 0);
+
+    const logoBase64 = canvas.toDataURL('image/png')
+     
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    // Fond d'en-tête
+doc.setFillColor(30, 60, 114);
+doc.rect(15, 0, 180, 40, 'F');
+
+// Dessiner l’image du logo par-dessus (le cercle blanc masque les coins)
+doc.addImage(logoBase64, 'PNG', 165, 8, 24, 24); // taille adaptée au cercle
+
+// Texte à droite du logo
+doc.setTextColor(255, 255, 255);
+doc.setFont('helvetica', 'bold');
+doc.setFontSize(16);
+doc.text('DEVIS INSTALLATION SOLAIRE', 20, 18);
+doc.setFontSize(10);
+doc.text('Générateur de devis professionnel', 20, 26);
+
+
             
-            // En-tête avec style
-            doc.setFillColor(30, 60, 114);
-            doc.rect(0, 0, 210, 40, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.text('DEVIS INSTALLATION SOLAIRE', 105, 25, { align: 'center' });
+            yPosition = 50; 
             
-            yPosition = 50;
             
             // Informations du projet dans un tableau
             doc.setTextColor(0, 0, 0);
@@ -591,13 +706,16 @@
             doc.setFontSize(12);
             
             const totalHT = totalMaterial + totalLabor;
+            const tva = totalHT * 0.2;
+            
+            const totalTTC = totalHT + tva;
             
             doc.text('TOTAUX', 105, yPosition + 8, { align: 'center' });
             
             doc.setFontSize(10);
-            doc.text(`Matériel: ${totalMaterial.toFixed(2)} €`, 25, yPosition + 15);
-            doc.text(`Pose: ${totalLabor.toFixed(2)} €`, 85, yPosition + 15);
-            doc.text(`TOTAL HT: ${totalHT.toFixed(2)} €`, 145, yPosition + 15);
+            doc.text(`TOTAL HT: ${totalHT.toFixed(2)} €`, 25, yPosition + 15);
+            doc.text(`TVA 20%: ${tva.toFixed(2)} €`, 85, yPosition + 15);
+            doc.text(`TOTAL TTC: ${totalTTC.toFixed(2)} €`, 145, yPosition + 15);
             
             yPosition += 30;
             
