@@ -458,6 +458,7 @@
                 });
 
                 updateCalculations();
+                addTotalRowToTable();
             }
 
             function calculateProject() {
@@ -500,13 +501,7 @@
         <td><strong>${totalPose.toFixed(2)} €</strong></td>
     `;
 
-                const existingTotalRow = tbody.querySelector('tr.total-row');
-                if (existingTotalRow) {
-                    tbody.removeChild(existingTotalRow);
-                }
-                totalRow.classList.add('total-row');
                 tbody.appendChild(totalRow);
-
                 document.getElementById('totalHT').textContent = (totalPriceqty + totalMaterial + totalLabor).toFixed(2) + ' €';
 
                 document.getElementById('tva').textContent = ((totalPriceqty + totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
@@ -748,8 +743,6 @@
                 calculateProject();
                 initializeTable();
             });
-
-
         </script>
 </body>
 
