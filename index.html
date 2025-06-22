@@ -668,9 +668,8 @@
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(12);
 
-                const totalHT = totalPriceqty + totalMaterial + totalLabor;
+                const totalHT = parseFloat(totalPriceqty) + parseFloat(totalMaterial) + parseFloat(totalLabor);
                 const tva = totalHT * 0.2;
-
                 const totalTTC = totalHT + tva;
 
                 doc.text('TOTAUX', 105, yPosition + 8, { align: 'center' });
