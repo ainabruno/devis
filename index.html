@@ -500,7 +500,6 @@
         <td><strong>${totalPose.toFixed(2)} €</strong></td>
     `;
 
-                const tbody = document.getElementById('quoteBody');
                 const existingTotalRow = tbody.querySelector('tr.total-row');
                 if (existingTotalRow) {
                     tbody.removeChild(existingTotalRow);
@@ -748,20 +747,6 @@
             document.addEventListener('DOMContentLoaded', function () {
                 calculateProject();
                 initializeTable();
-                const quoteBody = document.getElementById('quoteBody');
-
-                // Ajouter l'écouteur sur tout changement dans les champs matériel ou pose
-                quoteBody.addEventListener('input', (event) => {
-                    const target = event.target;
-
-                    // Vérifie si l'input modifié est dans une cellule matériel (colonne 5) ou pose (colonne 6)
-                    if (target.closest('td')) {
-                        const cellIndex = Array.from(target.closest('tr').children).indexOf(target.closest('td'));
-                        if (cellIndex === 4 || cellIndex === 5) { // 4 = Matériel, 5 = Pose
-                            updateCalculations();
-                        }
-                    }
-                });
             });
 
 
