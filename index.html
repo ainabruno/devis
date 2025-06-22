@@ -640,11 +640,11 @@
 
                             if (desc && (material > 0 || labor > 0 || qty > 0)) {
                                 doc.text(desc.substring(0, 35), 18, yPosition + 2);
-                                doc.text(price, 80, yPosition + 2);
-                                doc.text(qty, 112, yPosition + 2);
+                                doc.text(String(price), 80, yPosition + 2);
+                                doc.text(String(qty), 112, yPosition + 2);
                                 doc.text(unit, 132, yPosition + 2);
-                                doc.text(material, 157, yPosition + 2);
-                                doc.text(labor, 182, yPosition + 2);
+                                doc.text(String(material), 157, yPosition + 2);
+                                doc.text(String(labor), 182, yPosition + 2);
 
                                 totalPriceqty += price * qty;
                                 totalMaterial += material;
