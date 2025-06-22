@@ -80,7 +80,7 @@
             color: #666;
             margin-top: 8px;
         }
-        
+
         .project-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -480,7 +480,7 @@
                         const material = parseFloat(cells[4].querySelector('input')?.value) || 0;
                         const pose = parseFloat(cells[5].querySelector('input')?.value) || 0;
 
-                        
+
                         // Calculer les totaux (simplifié pour l'exemple)
                         const materialCost = material
                         const laborCost = pose; // Logique de calcul de pose à adapter
@@ -631,11 +631,11 @@
                         } else {
                             // Ligne d'item
                             const desc = cells[0].textContent.trim();
-                            const price = cells[1].querySelector('input')?.value || '0';
-                            const qty = cells[3].querySelector('input')?.value || '0';
+                            const price = parseFloat(cells[1].querySelector('input')?.value) || 0;
+                            const qty = parseFloat(cells[3].querySelector('input')?.value) || 0;
                             const unit = cells[2].textContent;
-                            const material = cells[4].querySelector('input')?.value || '0';
-                            const labor = cells[5].querySelector('input')?.value || '0';
+                            const material = parseFloat(cells[4].querySelector('input')?.value) || 0;
+                            const labor = parseFloat(cells[5].querySelector('input')?.value) || 0;
 
 
                             if (desc && (material > 0 || labor > 0 || qty > 0)) {
@@ -646,9 +646,9 @@
                                 doc.text(material, 157, yPosition + 2);
                                 doc.text(labor, 182, yPosition + 2);
 
-                                totalPriceqty += price * qty; 
+                                totalPriceqty += price * qty;
                                 totalMaterial += material;
-                                totalLabor +=labor;
+                                totalLabor += labor;
                             }
                         }
                         yPosition += 6;
