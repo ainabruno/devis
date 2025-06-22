@@ -460,32 +460,19 @@
                 updateCalculations();
             }
 
+            function calculateProject() {
+                const moduleCount = parseFloat(document.getElementById('moduleCount').value) || 0;
+                const modulePower = parseFloat(document.getElementById('modulePower').value) || 0;
+                const projectPower = (moduleCount * modulePower) / 1000;
+                document.getElementById('projectPower').value = projectPower.toFixed(1);
+            }
+
             function updateCalculations() {
                 let totalPriceqty = 0;
                 let totalMaterial = 0;
                 let totalLabor = 0;
 
-                const tbody = document.getElementById('quoteBody');
-                const rows = tbody.querySelectorAll('tr');
-
-                tbody.addEventListener('input', (event) => {
-                    const target = event.target;
-
-                    // Vérifie si l'input modifié est dans une cellule matériel (colonne 5) ou pose (colonne 6)
-                    if (target.closest('td')) {
-                        const cellIndex = Array.from(target.closest('tr').children).indexOf(target.closest('td'));
-                        if (cellIndex === 4 || cellIndex === 5) { // 4 = Matériel, 5 = Pose
-                            updateCalculations();
-                        }
-                    }
-                });
-
-                // Supprimer l'ancienne ligne TOTAL si elle existe
-                const existingTotalRow = tbody.querySelector('tr.total-row');
-                if (existingTotalRow) {
-                    tbody.removeChild(existingTotalRow);
-                }
-
+                const rows = document.querySelectorAll('#quoteBody tr');
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
                     if (cells.length === 6 && !cells[0].classList.contains('category-header')) {
@@ -494,8 +481,10 @@
                         const material = parseFloat(cells[4].querySelector('input')?.value) || 0;
                         const pose = parseFloat(cells[5].querySelector('input')?.value) || 0;
 
-                        const materialCost = material;
-                        const laborCost = pose;
+
+                        // Calculer les totaux (simplifié pour l'exemple)
+                        const materialCost = material
+                        const laborCost = pose; // Logique de calcul de pose à adapter
 
                         totalPriceqty += price * qty;
                         totalMaterial += materialCost;
@@ -504,24 +493,28 @@
                 });
 
                 const totalRow = document.createElement('tr');
-                totalRow.classList.add('total-row');
                 totalRow.innerHTML = `
-            <td><strong>TOTAL</strong></td>
-            <td></td><td></td><td></td>
-            <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
-            <td><strong>${totalLabor.toFixed(2)} €</strong></td>
-        `;
+        <td><strong>TOTAL</strong></td>
+        <td></td><td></td><td></td>
+        <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
+        <td><strong>${totalPose.toFixed(2)} €</strong></td>
+    `;
+
+                const tbody = document.getElementById('quoteBody');
+                const existingTotalRow = tbody.querySelector('tr.total-row');
+                if (existingTotalRow) {
+                    tbody.removeChild(existingTotalRow);
+                }
+                totalRow.classList.add('total-row');
                 tbody.appendChild(totalRow);
 
-                const totalHT = totalPriceqty + totalMaterial + totalLabor;
-                const tva = totalHT * 0.2;
-                const totalTTC = totalHT + tva;
+                document.getElementById('totalHT').textContent = (totalPriceqty + totalMaterial + totalLabor).toFixed(2) + ' €';
 
-                document.getElementById('totalHT').textContent = totalHT.toFixed(2) + ' €';
-                document.getElementById('tva').textContent = tva.toFixed(2) + ' €';
-                document.getElementById('totalTTC').textContent = totalTTC.toFixed(2) + ' €';
+                document.getElementById('tva').textContent = ((totalPriceqty + totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
+
+                document.getElementById('totalTTC').textContent = ((totalPriceqty + totalMaterial + totalLabor) + ((totalPriceqty + totalMaterial + totalLabor) * 0.2)).toFixed(2) + ' €';
+
             }
-
 
             function safeStr(value) {
                 if (value === null || value === undefined) return '';
@@ -755,7 +748,20 @@
             document.addEventListener('DOMContentLoaded', function () {
                 calculateProject();
                 initializeTable();
-                
+                const quoteBody = document.getElementById('quoteBody');
+
+                // Ajouter l'écouteur sur tout changement dans les champs matériel ou pose
+                quoteBody.addEventListener('input', (event) => {
+                    const target = event.target;
+
+                    // Vérifie si l'input modifié est dans une cellule matériel (colonne 5) ou pose (colonne 6)
+                    if (target.closest('td')) {
+                        const cellIndex = Array.from(target.closest('tr').children).indexOf(target.closest('td'));
+                        if (cellIndex === 4 || cellIndex === 5) { // 4 = Matériel, 5 = Pose
+                            updateCalculations();
+                        }
+                    }
+                });
             });
 
 
