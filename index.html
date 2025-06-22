@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,103 +28,59 @@
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
+
         .header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 40px;
-    text-align: left;
-    gap: 25px;
-    flex-wrap: wrap;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 20px;
-}
-
-.company-logo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.company-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.header-text {
-    flex-grow: 1;
-    min-width: 200px;
-}
-
-.header-text h1 {
-    font-size: 2rem;
-    margin: 0;
-    color: #333;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.header-text p {
-    font-size: 1rem;
-    color: #666;
-    margin-top: 8px;
-}
-
-
- <!--        
-        .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             margin-bottom: 40px;
-            position: relative;
+            text-align: left;
+            gap: 25px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
         }
 
         .company-logo {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            margin: 0 auto 20px;
+            overflow: hidden;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
         }
-        
-        .header h1 {
-            font-size: 3rem;
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .header-text {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .header-text h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: #333;
+            font-weight: 800;
+            letter-spacing: 0.5px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            font-weight: 700;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(45deg, #1e3c72, #2a5298);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .header-text p {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 8px;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-        } 
-  -->
-
+        
         .project-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -270,36 +227,37 @@
             .container {
                 padding: 15px;
             }
-            
+
             .header h1 {
                 font-size: 2rem;
             }
-            
+
             .project-info {
                 grid-template-columns: 1fr;
             }
-            
+
             .quote-table {
                 font-size: 10px;
             }
-            
+
             .total-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-    <div class="company-logo">
-        <img id="logoImage" src="images1.png" alt="Logo Énergie Solaire" onerror="this.style.display='none';">
-    </div>
-    <div class="header-text">
-        <h1>DEVIS INSTALLATION SOLAIRE</h1>
-        <p>Générateur de devis professionnel</p>
-    </div>
-</div>
+            <div class="company-logo">
+                <img id="logoImage" src="images1.png" alt="Logo Énergie Solaire" onerror="this.style.display='none';">
+            </div>
+            <div class="header-text">
+                <h1>DEVIS INSTALLATION SOLAIRE</h1>
+                <p>Générateur de devis professionnel</p>
+            </div>
+        </div>
 
 
 
@@ -334,11 +292,11 @@
             <thead>
                 <tr>
                     <th style="width: 40%">Description</th>
-                    <th style="width: 10%">Prix Unitaire</th>
+                    <th style="width: 15%">Prix de base</th>
                     <th style="width: 10%">Unité</th>
                     <th style="width: 10%">Quantité</th>
                     <th style="width: 15%">Matériel (€)</th>
-                    <th style="width: 15%">Pose (€)</th>
+                    <th style="width: 10%">Pose (€)</th>
                 </tr>
             </thead>
             <tbody id="quoteBody">
@@ -360,397 +318,401 @@
                     <h3>TOTAL TTC</h3>
                     <div class="amount" id="totalTTC">0.00 €</div>
                 </div>
+            </div>
+
+            <button class="btn-generate" onclick="generatePDF()">
+                📄 GÉNÉRER LE PDF
+            </button>
         </div>
 
-        <button class="btn-generate" onclick="generatePDF()">
-            📄 GÉNÉRER LE PDF
-        </button>
-    </div>
+        <script>
+            const quoteData = [
+                {
+                    category: "Ingénierie",
+                    items: [
+                        { desc: "Ingénierie + DOE <100kWc", price: 1000, unit: "kWc", qty: 1, material: 1000, pose: 0 },
+                        { desc: "<250kWc", price: 2000, unit: "kWc", qty: 1, material: 2000, pose: 0 },
+                        { desc: "<500kWc", price: 3500, unit: "kWc", qty: 0, material: 0, pose: 0 },
+                        { desc: "<1000kWc", price: 5000, unit: "kWc", qty: 0, material: 0, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Mise en sécurité",
+                    items: [
+                        { desc: "Mise en sécu standard", price: 500, unit: "kWc", qty: 5.36, material: 536, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Raccordement des modules",
+                    items: [
+                        { desc: "Raccordement de 1 panneau", price: 2, unit: "U", qty: 320, material: 640, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Câble solaire",
+                    items: [
+                        { desc: "4 mm²", price: 0.55, unit: "ml", qty: 0, material: 0, pose: 0 },
+                        { desc: "6 mm²", price: 0.8, unit: "ml", qty: 1000, material: 800, pose: 1000 }
+                    ]
+                },
+                {
+                    category: "Connecteurs",
+                    items: [
+                        { desc: "Paire connecteurs", price: 4, unit: "U", qty: 16, material: 64, pose: 0 },
+                        { desc: "Paire Y", price: 12, unit: "U", qty: 0, material: 0, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Câble AC",
+                    items: [
+                        { desc: "120 mm²", price: 2.88, unit: "ml", qty: 360, material: 1036.8, pose: 360 }
+                    ]
+                },
+                {
+                    category: "Cheminement des câbles",
+                    items: [
+                        { desc: "50*100 sur chaque rampant onduleur", price: 36, unit: "ond", qty: 1, material: 36, pose: 72 },
+                        { desc: "50*300 sur chaque rampant onduleur", price: 10, unit: "ond", qty: 1, material: 10, pose: 20 }
+                    ]
+                },
+                {
+                    category: "Coffret DC",
+                    items: [
+                        { desc: "<100kWc", price: 1100, unit: "U", qty: 1, material: 1100, pose: 0 },
+                        { desc: "Chassis / enclos", price: 150, unit: "U", qty: 1, material: 150, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Armoire AC + AGCP",
+                    items: [
+                        { desc: "Régime TT", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
+                        { desc: "+ 750 €/ond<100kWc", price: 750, unit: "", qty: 1, material: 750, pose: 0 },
+                        { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 },
+                        { desc: "Pose", price: 200, unit: "kWc", qty: 1, material: 0, pose: 214.4 }
+                    ]
+                },
+                {
+                    category: "Liaison equipotentielle",
+                    items: [
+                        { desc: "Fourniture", price: 500, unit: "kWc", qty: 1, material: 536, pose: 0 },
+                        { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 }
+                    ]
+                },
+                {
+                    category: "Arrêt d'urgence / affichage de sécurité",
+                    items: [
+                        { desc: "Fourniture et pose AU", price: 350, unit: "U", qty: 1, material: 350, pose: 20 },
+                        { desc: "Distance liaison AU", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 },
+                        { desc: "Affichage règlementaire", price: 100, unit: "kWc", qty: 1, material: 107.2, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Monitoring Weblog",
+                    items: [
+                        { desc: "Datalogger + sonde (pose seule)", price: 1250, unit: "", qty: 1, material: 1250, pose: 0 },
+                        { desc: "Système 0% injection BT (pose seule)", price: 400, unit: "", qty: 1, material: 400, pose: 0 },
+                        { desc: "Tors <1500A (x2 si boucle Togowski)", price: 250, unit: "U", qty: 6, material: 1500, pose: 0 },
+                        { desc: "Distance liaison bus onduleur", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Éclairage",
+                    items: [
+                        { desc: "Néon LED 36W", price: 155, unit: "U", qty: 4, material: 620, pose: 0 }
+                    ]
+                },
+                {
+                    category: "Contrôle de l'installation",
+                    items: [
+                        { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "U", qty: 1, material: 1000, pose: 0 }
+                    ]
+                }
+            ];
 
-    <script>
-        const quoteData = [
-            {
-                category: "Ingénierie",
-                items: [
-                    { desc: "Ingénierie + DOE <100kWc", price: 1000, unit: "kWc", qty: 1, material: 1000, pose: 0 },
-                    { desc: "<250kWc", price: 2000, unit: "kWc", qty: 1, material: 2000, pose: 0 },
-                    { desc: "<500kWc", price: 3500, unit: "kWc", qty: 0, material: 0, pose: 0 },
-                    { desc: "<1000kWc", price: 5000, unit: "kWc", qty: 0, material: 0, pose: 0 }
-                ]
-            },
-            {
-                category: "Mise en sécurité",
-                items: [
-                    { desc: "Mise en sécu standard", price: 500, unit: "kWc", qty: 5.36, material: 536, pose: 0 }
-                ]
-            },
-            {
-                category: "Raccordement des modules",
-                items: [
-                    { desc: "Raccordement de 1 panneau", price: 2, unit: "U", qty: 320, material: 640, pose: 0 }
-                ]
-            },
-            {
-                category: "Câble solaire",
-                items: [
-                    { desc: "4 mm²", price: 0.55, unit: "ml", qty: 0, material: 0, pose: 0 },
-                    { desc: "6 mm²", price: 0.8, unit: "ml", qty: 1000, material: 800, pose: 1000 }
-                ]
-            },
-            {
-                category: "Connecteurs",
-                items: [
-                    { desc: "Paire connecteurs", price: 4, unit: "U", qty: 16, material: 64, pose: 0 },
-                    { desc: "Paire Y", price: 12, unit: "U", qty: 0, material: 0, pose: 0 }
-                ]
-            },
-            {
-                category: "Câble AC",
-                items: [
-                    { desc: "120 mm²", price: 2.88, unit: "ml", qty: 360, material: 1036.8, pose: 360 }
-                ]
-            },
-            {
-                category: "Cheminement des câbles",
-                items: [
-                    { desc: "50*100 sur chaque rampant onduleur", price: 36, unit: "ond", qty: 1, material: 36, pose: 72 },
-                    { desc: "50*300 sur chaque rampant onduleur", price: 10, unit: "ond", qty: 1, material: 10, pose: 20 }
-                ]
-            },
-            {
-                category: "Coffret DC",
-                items: [
-                    { desc: "<100kWc", price: 1100, unit: "U", qty: 1, material: 1100, pose: 0 },
-                    { desc: "Chassis / enclos", price: 150, unit: "U", qty: 1, material: 150, pose: 0 }
-                ]
-            },
-            {
-                category: "Armoire AC + AGCP",
-                items: [
-                    { desc: "Régime TT", price: 1000, unit: "", qty: 1, material: 1000, pose: 0 },
-                    { desc: "+ 750 €/ond<100kWc", price: 750, unit: "", qty: 1, material: 750, pose: 0 },
-                    { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 },
-                    { desc: "Pose", price: 200, unit: "kWc", qty: 1, material: 0, pose: 214.4 }
-                ]
-            },
-            {
-                category: "Liaison equipotentielle",
-                items: [
-                    { desc: "Fourniture", price: 500, unit: "kWc", qty: 1, material: 536, pose: 0 },
-                    { desc: "Pose", price: 1000, unit: "kWc", qty: 1, material: 0, pose: 1072 }
-                ]
-            },
-            {
-                category: "Arrêt d'urgence / affichage de sécurité",
-                items: [
-                    { desc: "Fourniture et pose AU", price: 350, unit: "U", qty: 1, material: 350, pose: 20 },
-                    { desc: "Distance liaison AU", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 },
-                    { desc: "Affichage règlementaire", price: 100, unit: "kWc", qty: 1, material: 107.2, pose: 0 }
-                ]
-            },
-            {
-                category: "Monitoring Weblog",
-                items: [
-                    { desc: "Datalogger + sonde (pose seule)", price: 1250, unit: "", qty: 1, material: 1250, pose: 0 },
-                    { desc: "Système 0% injection BT (pose seule)", price: 400, unit: "", qty: 1, material: 400, pose: 0 },
-                    { desc: "Tors <1500A (x2 si boucle Togowski)", price: 250, unit: "U", qty: 6, material: 1500, pose: 0 },
-                    { desc: "Distance liaison bus onduleur", price: 3, unit: "ml", qty: 90, material: 270, pose: 0 }
-                ]
-            },
-            {
-                category: "Éclairage",
-                items: [
-                    { desc: "Néon LED 36W", price: 155, unit: "U", qty: 4, material: 620, pose: 0 }
-                ]
-            },
-            {
-                category: "Contrôle de l'installation",
-                items: [
-                    { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "U", qty: 1, material: 1000, pose: 0 }
-                ]
-            }
-        ];
+            function initializeTable() {
+                const tbody = document.getElementById('quoteBody');
+                tbody.innerHTML = '';
 
-        function initializeTable() {
-            const tbody = document.getElementById('quoteBody');
-            tbody.innerHTML = '';
-
-            quoteData.forEach(category => {
-                // Ligne de catégorie
-                const categoryRow = document.createElement('tr');
-                categoryRow.innerHTML = `
+                quoteData.forEach(category => {
+                    // Ligne de catégorie
+                    const categoryRow = document.createElement('tr');
+                    categoryRow.innerHTML = `
                     <td class="category-header" colspan="6">${category.category}</td>
                 `;
-                tbody.appendChild(categoryRow);
+                    tbody.appendChild(categoryRow);
 
-                // Lignes d'items
-                category.items.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+                    // Lignes d'items
+                    category.items.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
                         <td class="subcategory">${item.desc}</td>
                         <td class="input-cell"><input type="number" value="${item.price}" step="0.01" onchange="updateCalculations()"></td>
                         <td>${item.unit}</td>
-                        <td class="input-cell"><input type="number" value="${item.qty}" onchange="updateCalculations()" step="0.01"></td>
-                        <td class="price-column calculated-field">${item.material.toFixed(2)}</td>
-                        <td class="price-column calculated-field">${item.pose.toFixed(2)}</td>
+                        <td class="input-cell"><input type="number" value="${item.qty}" step="1" onchange="updateCalculations()" step="0.01"></td>
+                        <td class="input-cell"><input type="number" value="${item.material.toFixed(2)}" step="0.01" onchange="updateCalculations()"></td>
+                        <td class="input-cell"><input type="number" value="${item.pose.toFixed(2)}" step="0.01" onchange="updateCalculations()"></td>
                     `;
-                    tbody.appendChild(row);
+                        tbody.appendChild(row);
+                    });
                 });
-            });
 
-            updateCalculations();
-        }
+                updateCalculations();
+            }
 
-        function calculateProject() {
-            const moduleCount = parseFloat(document.getElementById('moduleCount').value) || 0;
-            const modulePower = parseFloat(document.getElementById('modulePower').value) || 0;
-            const projectPower = (moduleCount * modulePower) / 1000;
-            document.getElementById('projectPower').value = projectPower.toFixed(1);
-        }
+            function calculateProject() {
+                const moduleCount = parseFloat(document.getElementById('moduleCount').value) || 0;
+                const modulePower = parseFloat(document.getElementById('modulePower').value) || 0;
+                const projectPower = (moduleCount * modulePower) / 1000;
+                document.getElementById('projectPower').value = projectPower.toFixed(1);
+            }
 
-        function updateCalculations() {
-            let totalMaterial = 0;
-            let totalLabor = 0;
+            function updateCalculations() {
+                let totalPriceqty = 0;
+                let totalMaterial = 0;
+                let totalLabor = 0;
 
-            const rows = document.querySelectorAll('#quoteBody tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells.length === 6 && !cells[0].classList.contains('category-header')) {
-                    const price = parseFloat(cells[1].querySelector('input')?.value) || 0;
-                    const qty = parseFloat(cells[3].querySelector('input')?.value) || 0;
-                    
-                    // Calculer les totaux (simplifié pour l'exemple)
-                    const materialCost = price * qty;
-                    const laborCost = 0; // Logique de calcul de pose à adapter
-                    
-                    cells[4].textContent = materialCost.toFixed(2);
-                    cells[5].textContent = laborCost.toFixed(2);
-                    
-                    totalMaterial += materialCost;
-                    totalLabor += laborCost;
-                }
-            });
-            document.getElementById('totalHT').textContent = (totalMaterial + totalLabor).toFixed(2) + ' €';
+                const rows = document.querySelectorAll('#quoteBody tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length === 6 && !cells[0].classList.contains('category-header')) {
+                        const price = parseFloat(cells[1].querySelector('input')?.value) || 0;
+                        const qty = parseFloat(cells[3].querySelector('input')?.value) || 0;
+                        const materiel = parseFloat(cells[4].querySelector('input')?.value) || 0;
+                        const pose = parseFloat(cells[5].querySelector('input')?.value) || 0;
+                        // Calculer les totaux (simplifié pour l'exemple)
+                        const materialCost = materiel
+                        const laborCost = pose; // Logique de calcul de pose à adapter
 
-document.getElementById('tva').textContent = ((totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
-
-document.getElementById('totalTTC').textContent = ((totalMaterial + totalLabor) +((totalMaterial + totalLabor)*0.2)).toFixed(2) + ' €';
-            
-        }
-        
-        async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const logoImg = document.getElementById('logoImage');
-    
-    if (!logoImg.complete) {
-        await new Promise(resolve => {
-            logoImg.onload = resolve;
-            logoImg.onerror = resolve;
-        });
-    }
-
-    // Création d’un canvas pour convertir l’image
-    const canvas = document.createElement('canvas');
-    canvas.width = logoImg.naturalWidth;
-    canvas.height = logoImg.naturalHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(logoImg, 0, 0);
-
-    const logoBase64 = canvas.toDataURL('image/png')
-     
-    const doc = new jsPDF('p', 'mm', 'a4');
-
-    // Fond d'en-tête
-doc.setFillColor(30, 60, 114);
-doc.rect(15, 0, 180, 40, 'F');
-
-// Dessiner l’image du logo par-dessus (le cercle blanc masque les coins)
-doc.addImage(logoBase64, 'PNG', 165, 8, 24, 24); // taille adaptée au cercle
-
-// Texte à droite du logo
-doc.setTextColor(255, 255, 255);
-doc.setFont('helvetica', 'bold');
-doc.setFontSize(16);
-doc.text('DEVIS INSTALLATION SOLAIRE', 20, 18);
-doc.setFontSize(10);
-doc.text('Générateur de devis professionnel', 20, 26);
-
-
-            
-            yPosition = 50; 
-            
-            
-            // Informations du projet dans un tableau
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            
-            const projectName = document.getElementById('projectName').value || '';
-            const projectAddress = document.getElementById('projectAddress').value || '';
-            const moduleCount = document.getElementById('moduleCount').value || '320';
-            const modulePower = document.getElementById('modulePower').value || '335';
-            const projectPower = document.getElementById('projectPower').value || '107.2';
-            const roofSurface = document.getElementById('roofSurface').value || '544';
-            
-            // Tableau des informations projet
-            doc.setFillColor(240, 240, 240);
-            doc.rect(15, yPosition, 180, 8, 'F');
-            doc.setFont('helvetica', 'bold');
-            doc.text('INFORMATIONS DU PROJET', 20, yPosition + 5);
-            yPosition += 15;
-            
-            // Ligne 1
-            doc.setFont('helvetica', 'normal');
-            doc.text('Nom du projet :', 20, yPosition);
-            doc.text(projectName, 70, yPosition);
-            doc.text('Adresse :', 110, yPosition);
-            doc.text(projectAddress, 140, yPosition);
-            yPosition += 8;
-            
-            // Ligne 2
-            doc.text('Nombre de modules :', 20, yPosition);
-            doc.text(moduleCount, 70, yPosition);
-            doc.text('Puissance du module :', 110, yPosition);
-            doc.text(modulePower + ' W', 155, yPosition);
-            yPosition += 8;
-            
-            // Ligne 3
-            doc.text('Puissance du projet (kWc) :', 20, yPosition);
-            doc.text(projectPower, 70, yPosition);
-            doc.text('Surface de la toiture (m²) :', 110, yPosition);
-            doc.text(roofSurface, 155, yPosition);
-            yPosition += 15;
-            
-            // Légende
-            doc.setFillColor(220, 220, 220);
-            doc.rect(15, yPosition, 25, 6, 'F');
-            doc.text('Légende', 20, yPosition + 4);
-            doc.text(roofSurface, 45, yPosition + 4);
-            doc.text(projectPower, 70, yPosition + 4);
-            yPosition += 15;
-            
-            // En-tête du tableau principal
-            doc.setFillColor(30, 60, 114);
-            doc.rect(15, yPosition, 180, 8, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(8);
-            
-            doc.text('Description', 18, yPosition + 5);  
-            doc.text('Prix de vente', 80, yPosition + 5);
-            doc.text('Quantité', 110, yPosition + 5);
-            doc.text('Unité', 130, yPosition + 5);
-            doc.text('Matériel', 155, yPosition + 5);
-            doc.text('Pose', 180, yPosition + 5);
-            
-            yPosition += 10;
-            doc.setTextColor(0, 0, 0);
-            doc.setFont('helvetica', 'normal');
-            
-            // Données du tableau
-            let totalMaterial = 0;
-            let totalLabor = 0;
-            
-            const rows = document.querySelectorAll('#quoteBody tr');
-            rows.forEach(row => {
-                if (yPosition > 250) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-                
-                const cells = row.querySelectorAll('td');
-                if (cells.length === 6) {
-                    if (cells[0].classList.contains('category-header')) {
-                        // Ligne de catégorie
-                        doc.setFillColor(200, 200, 200);
-                        doc.rect(15, yPosition - 2, 180, 6, 'F');
-                        doc.setFont('helvetica', 'bold');
-                        doc.text(cells[0].textContent, 18, yPosition + 2);
-                        doc.setFont('helvetica', 'normal');
-                    } else {
-                        // Ligne d'item
-                        const desc = cells[0].textContent.trim();
-                        const price = cells[1].querySelector('input')?.value || '0';
-                        const qty = cells[3].querySelector('input')?.value || '0';
-                        const unit = cells[2].textContent;
-                        const material = parseFloat(cells[4].textContent) || 0;
-                        const labor = parseFloat(cells[5].textContent) || 0;
-                        
-                        
-                        if (desc && (material > 0 || labor > 0 || qty > 0)) {
-                            doc.text(desc.substring(0, 35), 18, yPosition + 2);
-                            doc.text(price, 80, yPosition + 2);
-                            doc.text(qty, 112, yPosition + 2);
-                            doc.text(unit, 132, yPosition + 2);
-                            doc.text(material.toFixed(2), 157, yPosition + 2);
-                            doc.text(labor.toFixed(2), 182, yPosition + 2);
-                            
-                            totalMaterial += material;
-                        }
+                        totalPriceqty += price * qty;
+                        totalMaterial += materialCost;
+                        totalLabor += laborCost;
                     }
-                    yPosition += 6;
-                }
-            });
-            
-            // Ligne de séparation
-            yPosition += 5;
-            doc.setLineWidth(0.5);
-            doc.line(15, yPosition, 195, yPosition);
-            yPosition += 10;
-            
-            // Totaux
-            doc.setFillColor(30, 60, 114);
-            doc.rect(15, yPosition, 180, 25, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(12);
-            
-            const totalHT = totalMaterial + totalLabor;
-            const tva = totalHT * 0.2;
-            
-            const totalTTC = totalHT + tva;
-            
-            doc.text('TOTAUX', 105, yPosition + 8, { align: 'center' });
-            
-            doc.setFontSize(10);
-            doc.text(`TOTAL HT: ${totalHT.toFixed(2)} €`, 25, yPosition + 15);
-            doc.text(`TVA 20%: ${tva.toFixed(2)} €`, 85, yPosition + 15);
-            doc.text(`TOTAL TTC: ${totalTTC.toFixed(2)} €`, 145, yPosition + 15);
-            
-            yPosition += 30;
-            
-            // Prestations incluses
-            doc.setTextColor(0, 0, 0);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(9);
-            doc.text('Prestations complémentaires incluses :', 20, yPosition);
-            yPosition += 5;
-            
-            doc.setFont('helvetica', 'normal');
-            doc.text('• Mise en service', 20, yPosition);
-            yPosition += 4;
-            doc.text('• Configuration du monitoring', 20, yPosition);
-            yPosition += 4;
-            doc.text('• 1 visite de contrôle et prise de mesure', 20, yPosition);
-            yPosition += 4;
-            doc.text('• Nettoyage du chantier et évacuation des déchets', 20, yPosition);
-            yPosition += 10;
-            
-            // Pied de page
-            doc.setFontSize(8);
-            doc.setTextColor(100, 100, 100);
-            const today = new Date().toLocaleDateString('fr-FR');
-            doc.text(`Devis généré le ${today}`, 20, 285);
-            doc.text('Page 1', 180, 285);
-            
-            doc.save(`devis-solaire-${projectName.replace(/\s+/g, '-') || 'projet'}.pdf`);
-        }
+                });
+                document.getElementById('totalHT').textContent = (totalPriceqty + totalMaterial + totalLabor).toFixed(2) + ' €';
 
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            calculateProject();
-            initializeTable();
-        });
-    </script>
+                document.getElementById('tva').textContent = ((totalPriceqty + totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
+
+                document.getElementById('totalTTC').textContent = ((totalPriceqty + totalMaterial + totalLabor) + ((totalPriceqty + totalMaterial + totalLabor) * 0.2)).toFixed(2) + ' €';
+
+            }
+
+            async function generatePDF() {
+                const { jsPDF } = window.jspdf;
+                const logoImg = document.getElementById('logoImage');
+
+                if (!logoImg.complete) {
+                    await new Promise(resolve => {
+                        logoImg.onload = resolve;
+                        logoImg.onerror = resolve;
+                    });
+                }
+
+                // Création d’un canvas pour convertir l’image
+                const canvas = document.createElement('canvas');
+                canvas.width = logoImg.naturalWidth;
+                canvas.height = logoImg.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoImg, 0, 0);
+
+                const logoBase64 = canvas.toDataURL('image/png')
+
+                const doc = new jsPDF('p', 'mm', 'a4');
+
+                // Fond d'en-tête
+                doc.setFillColor(30, 60, 114);
+                doc.rect(15, 0, 180, 40, 'F');
+
+                // Dessiner l’image du logo par-dessus (le cercle blanc masque les coins)
+                doc.addImage(logoBase64, 'PNG', 165, 8, 24, 24); // taille adaptée au cercle
+
+                // Texte à droite du logo
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(16);
+                doc.text('DEVIS INSTALLATION SOLAIRE', 20, 18);
+                doc.setFontSize(10);
+                doc.text('Générateur de devis professionnel', 20, 26);
+
+
+
+                yPosition = 50;
+
+
+                // Informations du projet dans un tableau
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+
+                const projectName = document.getElementById('projectName').value || '';
+                const projectAddress = document.getElementById('projectAddress').value || '';
+                const moduleCount = document.getElementById('moduleCount').value || '320';
+                const modulePower = document.getElementById('modulePower').value || '335';
+                const projectPower = document.getElementById('projectPower').value || '107.2';
+                const roofSurface = document.getElementById('roofSurface').value || '544';
+
+                // Tableau des informations projet
+                doc.setFillColor(240, 240, 240);
+                doc.rect(15, yPosition, 180, 8, 'F');
+                doc.setFont('helvetica', 'bold');
+                doc.text('INFORMATIONS DU PROJET', 20, yPosition + 5);
+                yPosition += 15;
+
+                // Ligne 1
+                doc.setFont('helvetica', 'normal');
+                doc.text('Nom du projet :', 20, yPosition);
+                doc.text(projectName, 70, yPosition);
+                doc.text('Adresse :', 110, yPosition);
+                doc.text(projectAddress, 140, yPosition);
+                yPosition += 8;
+
+                // Ligne 2
+                doc.text('Nombre de modules :', 20, yPosition);
+                doc.text(moduleCount, 70, yPosition);
+                doc.text('Puissance du module :', 110, yPosition);
+                doc.text(modulePower + ' W', 155, yPosition);
+                yPosition += 8;
+
+                // Ligne 3
+                doc.text('Puissance du projet (kWc) :', 20, yPosition);
+                doc.text(projectPower, 70, yPosition);
+                doc.text('Surface de la toiture (m²) :', 110, yPosition);
+                doc.text(roofSurface, 155, yPosition);
+                yPosition += 15;
+
+                // Légende
+                doc.setFillColor(220, 220, 220);
+                doc.rect(15, yPosition, 25, 6, 'F');
+                doc.text('Légende', 20, yPosition + 4);
+                doc.text(roofSurface, 45, yPosition + 4);
+                doc.text(projectPower, 70, yPosition + 4);
+                yPosition += 15;
+
+                // En-tête du tableau principal
+                doc.setFillColor(30, 60, 114);
+                doc.rect(15, yPosition, 180, 8, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8);
+
+                doc.text('Description', 18, yPosition + 5);
+                doc.text('Prix de vente', 80, yPosition + 5);
+                doc.text('Quantité', 110, yPosition + 5);
+                doc.text('Unité', 130, yPosition + 5);
+                doc.text('Matériel', 155, yPosition + 5);
+                doc.text('Pose', 180, yPosition + 5);
+
+                yPosition += 10;
+                doc.setTextColor(0, 0, 0);
+                doc.setFont('helvetica', 'normal');
+
+                // Données du tableau
+                let totalPriceqty = 0;
+                let totalMaterial = 0;
+                let totalLabor = 0;
+
+                const rows = document.querySelectorAll('#quoteBody tr');
+                rows.forEach(row => {
+                    if (yPosition > 250) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length === 6) {
+                        if (cells[0].classList.contains('category-header')) {
+                            // Ligne de catégorie
+                            doc.setFillColor(200, 200, 200);
+                            doc.rect(15, yPosition - 2, 180, 6, 'F');
+                            doc.setFont('helvetica', 'bold');
+                            doc.text(cells[0].textContent, 18, yPosition + 2);
+                            doc.setFont('helvetica', 'normal');
+                        } else {
+                            // Ligne d'item
+                            const desc = cells[0].textContent.trim();
+                            const price = cells[1].querySelector('input')?.value || '0';
+                            const qty = cells[3].querySelector('input')?.value || '0';
+                            const unit = cells[2].textContent;
+                            const material = cells[4].querySelector('input')?.value || '0';
+                            const labor = cells[5].querySelector('input')?.value || '0';
+
+
+                            if (desc && (material > 0 || labor > 0 || qty > 0)) {
+                                doc.text(desc.substring(0, 35), 18, yPosition + 2);
+                                doc.text(price, 80, yPosition + 2);
+                                doc.text(qty, 112, yPosition + 2);
+                                doc.text(unit, 132, yPosition + 2);
+                                doc.text(material.toFixed(2), 157, yPosition + 2);
+                                doc.text(labor.toFixed(2), 182, yPosition + 2);
+
+                                totalPriceqty += price * qty; 
+                                totalMaterial += material;
+                                totalLabor +=labor;
+                            }
+                        }
+                        yPosition += 6;
+                    }
+                });
+
+                // Ligne de séparation
+                yPosition += 5;
+                doc.setLineWidth(0.5);
+                doc.line(15, yPosition, 195, yPosition);
+                yPosition += 10;
+
+                // Totaux
+                doc.setFillColor(30, 60, 114);
+                doc.rect(15, yPosition, 180, 25, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+
+                const totalHT = totalPriceqty + totalMaterial + totalLabor;
+                const tva = totalHT * 0.2;
+
+                const totalTTC = totalHT + tva;
+
+                doc.text('TOTAUX', 105, yPosition + 8, { align: 'center' });
+
+                doc.setFontSize(10);
+                doc.text(`TOTAL HT: ${totalHT.toFixed(2)} €`, 25, yPosition + 15);
+                doc.text(`TVA 20%: ${tva.toFixed(2)} €`, 85, yPosition + 15);
+                doc.text(`TOTAL TTC: ${totalTTC.toFixed(2)} €`, 145, yPosition + 15);
+
+                yPosition += 30;
+
+                // Prestations incluses
+                doc.setTextColor(0, 0, 0);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(9);
+                doc.text('Prestations complémentaires incluses :', 20, yPosition);
+                yPosition += 5;
+
+                doc.setFont('helvetica', 'normal');
+                doc.text('• Mise en service', 20, yPosition);
+                yPosition += 4;
+                doc.text('• Configuration du monitoring', 20, yPosition);
+                yPosition += 4;
+                doc.text('• 1 visite de contrôle et prise de mesure', 20, yPosition);
+                yPosition += 4;
+                doc.text('• Nettoyage du chantier et évacuation des déchets', 20, yPosition);
+                yPosition += 10;
+
+                // Pied de page
+                doc.setFontSize(8);
+                doc.setTextColor(100, 100, 100);
+                const today = new Date().toLocaleDateString('fr-FR');
+                doc.text(`Devis généré le ${today}`, 20, 285);
+                doc.text('Page 1', 180, 285);
+
+                doc.save(`devis-solaire-${projectName.replace(/\s+/g, '-') || 'projet'}.pdf`);
+            }
+
+            // Initialisation
+            document.addEventListener('DOMContentLoaded', function () {
+                calculateProject();
+                initializeTable();
+            });
+        </script>
 </body>
+
 </html>
