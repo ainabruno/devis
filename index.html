@@ -498,6 +498,14 @@
 
             }
 
+            function safeStr(value) {
+                if (value === null || value === undefined) return '';
+                if (typeof value === 'string') return value;
+                if (typeof value === 'number') return value.toString();
+                return String(value);
+            }
+
+
             async function generatePDF() {
                 const { jsPDF } = window.jspdf;
                 const logoImg = document.getElementById('logoImage');
@@ -640,16 +648,17 @@
 
                             if (desc && (material > 0 || labor > 0 || qty > 0)) {
                                 doc.text(desc.substring(0, 35), 18, yPosition + 2);
-                                doc.text(String(price), 80, yPosition + 2);
-                                doc.text(String(qty), 112, yPosition + 2);
-                                doc.text(unit, 132, yPosition + 2);
-                                doc.text(String(material), 157, yPosition + 2);
-                                doc.text(String(labor), 182, yPosition + 2);
+                                doc.text(safeStr(price), 80, yPosition + 2);
+                                doc.text(safeStr(qty), 112, yPosition + 2);
+                                doc.text(safeStr(unit), 132, yPosition + 2);
+                                doc.text(safeStr(material), 157, yPosition + 2);
+                                doc.text(safeStr(labor), 182, yPosition + 2);
 
                                 totalPriceqty += price * qty;
                                 totalMaterial += material;
                                 totalLabor += labor;
                             }
+
                         }
                         yPosition += 6;
                     }
