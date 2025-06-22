@@ -458,7 +458,6 @@
                 });
 
                 updateCalculations();
-                addTotalRowToTable();
             }
 
             function calculateProject() {
@@ -467,35 +466,6 @@
                 const projectPower = (moduleCount * modulePower) / 1000;
                 document.getElementById('projectPower').value = projectPower.toFixed(1);
             }
-
-            function addTotalRowToTable() {
-                const tbody = document.getElementById('quoteBody');
-
-                let totalMaterial = 0;
-                let totalPose = 0;
-
-                // Somme des matériels et poses dans le tableau
-                tbody.querySelectorAll('tr').forEach(row => {
-                    if (!row.querySelector('td').classList.contains('category-header')) {
-                        const materialInput = row.cells[4].querySelector('input');
-                        const poseInput = row.cells[5].querySelector('input');
-                        totalMaterial += parseFloat(materialInput?.value) || 0;
-                        totalPose += parseFloat(poseInput?.value) || 0;
-                    }
-                });
-
-                // Création de la ligne total
-                const totalRow = document.createElement('tr');
-                totalRow.innerHTML = `
-        <td><strong>TOTAL</strong></td>
-        <td></td><td></td><td></td>
-        <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
-        <td><strong>${totalPose.toFixed(2)} €</strong></td>
-    `;
-
-                tbody.appendChild(totalRow);
-            }
-
 
             function updateCalculations() {
                 let totalPriceqty = 0;
@@ -521,6 +491,16 @@
                         totalLabor += laborCost;
                     }
                 });
+
+                const totalRow = document.createElement('tr');
+                totalRow.innerHTML = `
+        <td><strong>TOTAL</strong></td>
+        <td></td><td></td><td></td>
+        <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
+        <td><strong>${totalPose.toFixed(2)} €</strong></td>
+    `;
+
+                tbody.appendChild(totalRow);
                 document.getElementById('totalHT').textContent = (totalPriceqty + totalMaterial + totalLabor).toFixed(2) + ' €';
 
                 document.getElementById('tva').textContent = ((totalPriceqty + totalMaterial + totalLabor) * 0.2).toFixed(2) + ' €';
