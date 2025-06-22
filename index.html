@@ -426,12 +426,6 @@
                     items: [
                         { desc: "Visite avec bureau de contrôle + consuel", price: 1000, unit: "U", qty: 1, material: 1000, pose: 0 }
                     ]
-                },
-                {
-                    category: "",
-                    items: [
-                        { desc: "", price: "", unit: "", qty: "TOTAL", material: totalMaterial, pose: totalLabor }
-                    ]
                 }
 
             ];
@@ -493,11 +487,11 @@
                 // Création de la ligne total
                 const totalRow = document.createElement('tr');
                 totalRow.innerHTML = `
-        <td><strong>TOTAL</strong></td>
-        <td></td><td></td><td></td>
-        <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
-        <td><strong>${totalPose.toFixed(2)} €</strong></td>
-    `;
+                    <td><strong>TOTAL</strong></td>
+                    <td></td><td></td><td></td>
+                    <td><strong>${totalMaterial.toFixed(2)} €</strong></td>
+                    <td><strong>${totalPose.toFixed(2)} €</strong></td>
+                `;
 
                 tbody.appendChild(totalRow);
             }
@@ -633,6 +627,15 @@
                 doc.text(roofSurface, 45, yPosition + 4);
                 doc.text(projectPower, 70, yPosition + 4);
                 yPosition += 15;
+
+                // Ligne total matériel + pose
+                doc.setFont('helvetica', 'bold');
+                doc.text('TOTAL Matériel', 18, yPosition + 2);
+                doc.text(totalMaterial.toFixed(2), 157, yPosition + 2);
+                doc.text(totalLabor.toFixed(2), 182, yPosition + 2);
+                yPosition += 10;
+                doc.setFont('helvetica', 'normal');
+
 
                 // En-tête du tableau principal
                 doc.setFillColor(30, 60, 114);
